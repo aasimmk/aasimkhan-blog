@@ -30,8 +30,10 @@ sys.path.append(os.path.join(PROJECT_DIR, 'apps'))
 INSTALLED_APPS = [
     'home',
     'search',
+    'blog',
 
     'wagtail.contrib.forms',
+    'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
     'wagtail.sites',
@@ -42,6 +44,9 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
+
+    # Wagtail plugins
+    'wagtailcodeblock',
 
     'modelcluster',
     'taggit',
@@ -72,7 +77,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -163,3 +168,24 @@ WAGTAIL_SITE_NAME = "myblog"
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'https://aasimkhan.in'
+
+
+# wagtailcodeblock config
+WAGTAIL_CODE_BLOCK_THEME = "dark"
+WAGTAIL_CODE_BLOCK_LANGUAGES = (
+    ('bash', 'Bash/Shell'),
+    ('c', 'C'),
+    ('cpp', 'C++'),
+    ('css', 'CSS'),
+    ('django', 'Django/Jinja2'),
+    ('docker', 'Docker'),
+    ('html', 'HTML'),
+    ('javascript', 'Javascript'),
+    ('json', 'JSON'),
+    ('markdown', 'Markdown'),
+    ('n4js', 'N4JS'),
+    ('python', 'Python'),
+    ('scss', 'SCSS'),
+    ('sql', 'SQL'),
+    ('yaml', 'YAML'),
+)

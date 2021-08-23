@@ -6,6 +6,9 @@ __pycache__/
 # IDE
 .idea
 
+# Project specific
+src/media
+
 # C extensions
 *.so
 
