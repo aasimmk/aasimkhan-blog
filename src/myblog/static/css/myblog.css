@@ -20,6 +20,12 @@ ol li, ul li {
 #content{
     border: none;
 }
+form{
+    background: none;
+    color: initial;
+    border: none;
+    border-radius: 0;
+}
 .e-mail:before {
     content: attr(data-website) "\0040" attr(data-user);
     unicode-bidi: bidi-override;
@@ -184,7 +190,6 @@ ol li, ul li {
 }
 .search__input::placeholder {
     color: rgba(87, 87, 86, 0.8);
-    text-transform: uppercase;
     letter-spacing: 1.5px;
 }
 .search__input:focus {

@@ -30,7 +30,7 @@
                         <div class="row">
                             <div class="col-md-4 col-md-offset-4">
                                 <div class="search__container" id="search_container">
-                                    <form method="GET" action="{% url 'blog:search' %}" id="search_blog">
+                                    <form method="GET" action="{% url 'blog:search' %}" id="search_blog" autocomplete="off">
                                         <div class="row">
                                             <div class="col-md-11">
                                                 <input type="text" placeholder="Enter keywords" name="keyword">
@@ -39,8 +39,8 @@
                                                 <input class="primary" type="submit" value="Search">
                                             </div>
                                         </div>
-                                        <input class="search__input mono-font-2" type="text" placeholder="Search Blogs" name="keyword">
-                                        <input class="search__submit" type="submit" value="">
+                                        <input class="search__input mono-font-2" type="text" placeholder="Type your keywords" name="keyword">
+                                        <input class="search__submit" type="submit" value="Search">
                                     </form>
                                 </div>
                             </div>
