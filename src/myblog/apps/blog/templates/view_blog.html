@@ -1,0 +1,47 @@
+{% extends "base_child_page.html" %}
+{% load cms_tags menu_tags django_bootstrap_breadcrumbs %}
+{% block title %}{{ blog_details.title }}{% endblock %}
+{% block meta_data %}
+        <meta name="keywords" content="{{ blog_details.meta_description }}">
+        <meta name="description" content="{{ blog_details.meta_keyword }}">
+{% endblock %}
+{% block content %}
+    {% render_model_block blog_details %}
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <section class="post single">
+                    <header>
+                        <h1 class="title font-1">
+                            {{ blog_details.title }}
+                        </h1>
+                        <p class="sub-heading">Posted in <a href="{{ blog_details.category.get_absolute_url }}">{{ blog_details.category }}</a></p>
+                    </header>
+                    <div class="description">
+                        {{ blog_details.content|safe }}
+                        <p>Feel free to suggest improvements. Thank you!</p>
+                        <p class="last-updated">[ Lasted updated on {{ blog_details.date_modified }} ]</p>
+                    </div>
+                    <div class="gads">
+                        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({
+                                  google_ad_client: "ca-pub-9471519625358959",
+                                  enable_page_level_ads: true
+                             });
+                        </script>
+                    </div>
+                    <div id="disqus_thread"></div>
+                    <script>
+                        (function() {
+                            var d = document, s = d.createElement('script');
+                            s.src = 'https://aasimkhan-in.disqus.com/embed.js';
+                            s.setAttribute('data-timestamp', +new Date());
+                            (d.head || d.body).appendChild(s);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </section>
+            </div>
+        </div>
+    {% endrender_model_block %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'home.html' %}
+{% load menu_tags cms_tags %}
+{% block content %}
+    {% regroup object_list by category as category_list %}
+        {% for category in category_list %}
+            {{ category.grouper.get_absolute_url }}
+            {{ category.grouper.thumbnail.url }}
+            {{ category.grouper }}
+            {{ category.list | length }}
+        {% endfor %}
+{% endblock %}

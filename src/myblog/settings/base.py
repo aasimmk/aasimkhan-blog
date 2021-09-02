@@ -28,10 +28,12 @@ sys.path.append(os.path.join(PROJECT_DIR, 'apps'))
 
 # Application definition
 INSTALLED_APPS = [
+    # Custom apps
     'home',
     'search',
     'blog',
 
+    # Wagtail
     'wagtail.contrib.forms',
     'wagtail.contrib.modeladmin',
     'wagtail.contrib.redirects',
@@ -48,15 +50,18 @@ INSTALLED_APPS = [
     # Wagtail plugins
     'wagtailcodeblock',
 
-    'modelcluster',
-    'taggit',
-
+    # Django
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # 3rd party
+    'modelcluster',
+    'taggit',
+    'gtm',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +82,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(PROJECT_DIR, 'templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

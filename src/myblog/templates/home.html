@@ -1,0 +1,84 @@
+{% load static gtm_tags %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta name="keywords" content="Aasim Khan, django, serverless, iot, internet of things, aws, backend developer, new delhi">
+        <meta name="description" content="My name is Aasim Khan, working as senior software developer in Tivix Inc. Works on aws, python, django, rest-api and internet of things">
+        <meta name="author" content="Aasim Khan">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mini.css/3.0.1/mini-default.min.css">
+{#        <link rel="stylesheet" media="all" href="{% static 'css/bootstrap.min.css' %}">#}
+{#        <link rel="stylesheet" media="all" href="{% static 'css/font-awesome.min.css' %}">#}
+        <link rel="stylesheet" media="all" href="{% static 'css/myblog.css' %}">
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}"/>
+        <!-- HTML5 shiv for IE8 support -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+
+        <![endif]-->
+{#        {% render_block "css" %}#}
+{#        {% render_block "js" %}#}
+        {% gtm_head %}
+    </head>
+    <body>
+        {% gtm_body %}
+        <main id="main" class="col-md-6 col-md-offset-3 col-sm-12">
+            <div id="content" class="card fluid">
+                <div class="section double-padded">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <div class="search__container" id="search_container">
+                                    <form method="GET" action="{% url 'blog:search' %}" id="search_blog">
+                                        <div class="row">
+                                            <div class="col-md-11">
+                                                <input type="text" placeholder="Enter keywords" name="keyword">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <input class="primary" type="submit" value="Search">
+                                            </div>
+                                        </div>
+                                        <input class="search__input mono-font-2" type="text" placeholder="Search Blogs" name="keyword">
+                                        <input class="search__submit" type="submit" value="">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+                                <div class="row" id="intro">
+                                    <div class="col-md-4">
+                                        <img class="img-responsive img-circle" alt="Aasim Khan" height="160" width="160" src="{% static 'img/aasim.jpg' %}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4>Hi! My name is Aasim Khan.</h4>
+                                        <p>Lives in New Delhi. I write code in python and currently, working as Senior Software Developer with Tivix Inc. This is my personal blog and I post my ideas here.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row blog-container">
+                            <div class="col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
+                                {% block content %}
+
+                                {% endblock content %}
+                            </div>
+                        </div>
+                        <div class="footer">
+                            <div class="row">
+                                <div class="col-md-6 col-md-offset-3">
+                                    <p class="text-center">Get in touch with me on <a href="https://www.linkedin.com/in/aasim-mk/" target="_blank">LinkedIn</a>, <a href="https://github.com/AasimMK" target="_blank">GitHub</a></p>
+                                    <p class="text-center">If you have any idea, suggestion or query. You can write to <span class="e-mail" data-user="tcatnoc" data-website="ni.nahkmisaa"></span>.</p>
+                                    <hr>
+                                    <p class="text-center">Built with <a href="https://www.django-cms.org/" target="_blank">Wagtail <i class="fa fa-external-link"></i></a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </body>
+</html>
