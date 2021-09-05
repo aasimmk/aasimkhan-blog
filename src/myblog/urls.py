@@ -3,7 +3,7 @@ from django.urls import include, path
 from django.contrib import admin
 
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.core import urls as wagtail_urls
+# from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from search import views as search_views
@@ -11,7 +11,6 @@ from search import views as search_views
 urlpatterns = [
     path('', include('blog.urls')),
     path('admin/', include(wagtailadmin_urls)),
-    path('search/', search_views.search, name='search'),
 ]
 
 
@@ -23,6 +22,7 @@ if settings.DEBUG:
     urlpatterns += [
         path('django-admin/', admin.site.urls),
         path('documents/', include(wagtaildocs_urls)),
+        path('search/', search_views.search, name='search'),
     ]
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

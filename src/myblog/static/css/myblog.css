@@ -25,6 +25,14 @@ form{
     color: initial;
     border: none;
     border-radius: 0;
+    margin: 0;
+    padding: 0;
+}
+fieldset{
+    border: none;
+}
+textarea {
+    resize: none;
 }
 .e-mail:before {
     content: attr(data-website) "\0040" attr(data-user);
