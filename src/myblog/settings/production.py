@@ -1,4 +1,7 @@
+import django_heroku
+
 from .base import *
+
 
 DEBUG = False
 
@@ -19,3 +22,5 @@ DATABASES = {
         "PORT": os.getenv("POSTGRES_PORT", 5432),
     }
 }
+
+django_heroku.settings(locals())

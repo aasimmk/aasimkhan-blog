@@ -10,3 +10,7 @@ wagtailcodeblock==1.17.1.0
 
 # Google
 django-google-tag-manager==0.0.5
+
+# Deploy
+gunicorn==20.1.0
+django-heroku==0.3.1
