@@ -8,7 +8,13 @@ DEBUG = False
 try:
     from .local import *
 except ImportError:
+    print("It's good if you are seeing this error on production.")
     pass
+
+ALLOWED_HOSTS = [
+    'aasimkhan.in',
+    'aasimkhan-in.herokuapp.com'
+]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases

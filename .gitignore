@@ -8,6 +8,7 @@ __pycache__/
 
 # Project specific
 src/media
+src/myblog/settings/local.py
 
 # C extensions
 *.so
