@@ -7,8 +7,8 @@ __pycache__/
 .idea
 
 # Project specific
-src/media
-src/myblog/settings/local.py
+media
+myblog/settings/local.py
 
 # C extensions
 *.so

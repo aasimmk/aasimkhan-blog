@@ -17,6 +17,8 @@ import sys
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+print(PROJECT_DIR)
+print(BASE_DIR)
 
 # project root and add "apps" to the path
 sys.path.append(os.path.join(PROJECT_DIR, 'apps'))
