@@ -1,1 +1,2 @@
-web: python3 manage.py migrate && python3 manage.py collectstatic --noinput && gunicorn wsgi:application --error-logfile - --log-file - --bind="0.0.0.0:$PORT"
+web: python manage.py migrate && python manage.py collectstatic --noinput && gunicorn wsgi:application --error-logfile - --log-file - --bind="0.0.0.0:$PORT"
+
