@@ -4,7 +4,7 @@ from .base import *
 DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gqz-yupd(j%^&524bq@*fcqrr$37^v+(zzdrq2$sh)p%ioi=h%'
+SECRET_KEY = 'super-secure-secret-key-django-project'
 
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ['*']
@@ -18,8 +18,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 
 try:

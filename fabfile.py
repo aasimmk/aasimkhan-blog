@@ -8,7 +8,7 @@ def prod():
 
 
 def deploy(branch=False):
-    local('git push heroku master')
+    local('git push heroku main')
 
 
 def config():

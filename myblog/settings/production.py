@@ -8,8 +8,13 @@ DEBUG = False
 try:
     from .local import *
 except ImportError:
-    print("It's good if you are seeing this error on production.")
+    print("It's okay if you are seeing this warning message on production.")
     pass
+
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    raise EnvironmentError('SECRET IS NOT CONFIGURED.')
 
 ALLOWED_HOSTS = [
     'aasimkhan.in',
