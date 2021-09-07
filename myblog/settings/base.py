@@ -11,8 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
 import os
 import sys
+
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -62,6 +64,7 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     'gtm',
+    'honeypot',
 ]
 
 MIDDLEWARE = [
@@ -149,7 +152,7 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#manifeststaticfilesstorage
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = PROJECT_DIR
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -193,3 +196,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Hello from Aasim'
+
+
+# Honeypot setting
+HONEYPOT_FIELD_NAME = "phone_alt"  # Default honeypot field.
+HONEYPOT_VALUE = (lambda: int(datetime.datetime.timestamp(datetime.datetime.now())))
+HONEYPOT_VERIFIER = (lambda x: (int(datetime.datetime.timestamp(datetime.datetime.now())) - int(x)) > 3)

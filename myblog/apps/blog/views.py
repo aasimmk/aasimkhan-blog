@@ -2,12 +2,18 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from blog.models import BlogPost, BlogCategory
+from core.forms import ContactForm
 
 
 class ListBlog(ListView):
     model = BlogPost
     queryset = BlogPost.objects.order_by('-created')
     template_name = 'view_blogs_by_date.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context_data = super(ListBlog, self).get_context_data()
+        context_data['form'] = ContactForm
+        return context_data
 
 
 class ListBlogCategory(ListView):

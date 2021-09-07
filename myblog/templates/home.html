@@ -1,4 +1,4 @@
-{% load static gtm_tags %}
+{% load static gtm_tags honeypot %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -46,25 +46,32 @@
                         <div class="footer">
                             <div class="row">
                                 <div class="col-md-6 col-md-offset-3">
-                                    <p class="text-center">Say Hi!</p>
-                                    <form>
+                                    <form id="say_hi" action="{% url 'core:contact_form_view' %}" method="POST">
+                                        {% csrf_token %}
+
                                         <fieldset>
                                             <div class="row responsive-label">
                                                 <div class="col-sm-12 col-md-8 col-md-offset-2">
-                                                    <input type="text" placeholder="Email" style="width:100%;" class="doc">
+                                                    {{ form.email_alt }}
                                                 </div>
                                             </div>
                                             <div class="row responsive-label">
                                                 <div class="col-sm-12 col-md-8 col-md-offset-2">
-                                                    <textarea class="doc" style="width:100%;" placeholder="Message" spellcheck="false"></textarea>
+                                                    {{ form.message }}
                                                 </div>
                                             </div>
                                             <div class="row responsive-label">
                                                 <div class="col-sm-12 col-md-12 text-center">
-                                                    <input type="button" value="Send" />
+                                                    <button type="submit">
+                                                        Say Hi!
+                                                    </button>
                                                 </div>
                                             </div>
                                         </fieldset>
+
+                                        <input type="text" name="{{ form.subject_1.name }}" style="display:none !important" tabindex="-1" autocomplete="off" />
+                                        {% render_honeypot_field 'email' %}
+
                                     </form>
                                     <p class="text-center">Get in touch with me on <a href="https://www.linkedin.com/in/aasim-mk/" target="_blank">LinkedIn</a>, <a href="https://github.com/AasimMK" target="_blank">GitHub</a></p>
                                     <hr>

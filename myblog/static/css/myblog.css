@@ -40,6 +40,10 @@ textarea {
     direction: rtl;
     color: #337ab7;
 }
+#say_hi input, #say_hi textarea {
+    width: 100%;
+    border: .0625rem solid var(--input-border-color);
+}
 
 /**** Home ****/
 .blog-container{
