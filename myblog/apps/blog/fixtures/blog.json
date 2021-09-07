@@ -4,7 +4,9 @@
     "pk": 1,
     "fields": {
         "name": "IoT",
-        "slug": "internet-of-things"
+        "slug": "internet-of-things",
+        "created": "2019-02-01T00:00:00Z",
+        "modified": "2019-05-23T06:09:05.400Z"
     }
 },
 {
@@ -14,8 +16,8 @@
         "title": "IoT Notification Using AWS (Part 1)",
         "slug": "iot-notification-using-aws-part-1",
         "category": 1,
-        "date_created": "2019-02-01",
-        "date_modified": "2019-05-23T06:09:05.400Z",
+        "created": "2019-05-23T06:09:05.400Z",
+        "modified": "2019-05-23T06:09:05.400Z",
         "image": "",
         "thumbnail": "",
         "meta_keyword": "aws iot, iot notification, aws iot core, iot, lambda, node mcu, esp 8266",
@@ -31,8 +33,8 @@
         "title": "IoT Notification Using AWS (Part 2)",
         "slug": "iot-notification-using-aws-part-2",
         "category": 1,
-        "date_created": "2019-02-06",
-        "date_modified": "2019-02-06T21:29:32.944Z",
+        "created": "2019-02-06T21:29:32.944Z",
+        "modified": "2019-02-06T21:29:32.944Z",
         "image": "",
         "thumbnail": "",
         "meta_keyword": "aws iot, iot notification, aws iot core, iot, lambda, sns, temperature sensor",
@@ -48,8 +50,8 @@
         "title": "Storing IoT Data with AWS DynamoDB",
         "slug": "storing-iot-data-with-aws-dynamodb",
         "category": 1,
-        "date_created": "2019-02-27",
-        "date_modified": "2019-02-27T06:33:26.899Z",
+        "created": "2019-02-27T06:33:26.899Z",
+        "modified": "2019-02-27T06:33:26.899Z",
         "image": "",
         "thumbnail": "",
         "meta_keyword": "aws iot, aws dynamodb, aws iot core, iot, temperature sensor",
