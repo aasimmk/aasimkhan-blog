@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django_extensions.db.models import TimeStampedModel
 from wagtail.core import blocks
 from wagtail.core.fields import RichTextField, StreamField
@@ -14,6 +15,9 @@ class BlogCategory(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:view_blogs_by_category', kwargs={'slug': self.slug})
 
 
 class BlogPost(TimeStampedModel):
@@ -40,3 +44,6 @@ class BlogPost(TimeStampedModel):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog:view_blog_detail', kwargs={'slug': self.slug})

@@ -2,29 +2,25 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 
 from blog.models import BlogPost, BlogCategory
-from core.forms import ContactForm
+from core.mixins import ContactFormViewMixin
 
 
-class ListBlog(ListView):
+class ListBlog(ContactFormViewMixin, ListView):
     model = BlogPost
+    context_object_name = 'blogs'
     queryset = BlogPost.objects.order_by('-created')
-    template_name = 'view_blogs_by_date.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context_data = super(ListBlog, self).get_context_data()
-        context_data['form'] = ContactForm
-        return context_data
+    template_name = 'blog_home.html'
 
 
-class ListBlogCategory(ListView):
+class ListBlogCategory(ContactFormViewMixin, ListView):
     model = BlogPost
     queryset = BlogPost.objects.order_by('category')
-    template_name = 'view_blog_category.html'
+    template_name = 'blog_category.html'
 
 
-class ListBlogByCategory(ListView):
+class ListBlogByCategory(ContactFormViewMixin, ListView):
     model = BlogPost
-    template_name = 'view_blogs_by_date.html'
+    template_name = 'blog_home.html'
 
     def get_queryset(self):
         category = get_object_or_404(BlogCategory, slug=self.kwargs['slug'])
@@ -33,9 +29,9 @@ class ListBlogByCategory(ListView):
         ).order_by('-created')
 
 
-class ListBlogByYear(ListView):
+class ListBlogByYear(ContactFormViewMixin, ListView):
     model = BlogPost
-    template_name = 'view_blogs_by_date.html'
+    template_name = 'blog_home.html'
 
     def get_queryset(self):
         return BlogPost.objects.filter(
@@ -43,16 +39,16 @@ class ListBlogByYear(ListView):
         ).order_by('-created')
 
 
-class BlogDetailView(DetailView):
+class BlogDetailView(ContactFormViewMixin, DetailView):
     model = BlogPost
-    context_object_name = 'blog_details'
-    template_name = 'view_blog.html'
+    context_object_name = 'blog'
+    template_name = 'blog_detail.html'
 
 
-class SearchBlog(ListView):
+class SearchBlog(ContactFormViewMixin, ListView):
     model = BlogPost
     paginate_by = 25
-    template_name = 'search_result.html'
+    template_name = 'search.html'
 
     def get_queryset(self):
         keyword = self.request.GET.get('keyword')

@@ -1,6 +1,20 @@
+from django.contrib import admin
 from wagtail.contrib.modeladmin.options import ModelAdminGroup, ModelAdmin, modeladmin_register
 
 from blog.models import BlogCategory, BlogPost
+
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "slug", "thumbnail", "created", "modified",)
+    ordering = ("name",)
+
+
+@admin.register(BlogPost)
+class BlogPostAdmin(admin.ModelAdmin):
+    list_display = ("title", "slug", "category", "is_published", "created", "modified",)
+    list_filter = ("category", "created", "modified",)
+    ordering = ("-modified",)
 
 
 class CategoryAdmin(ModelAdmin):
@@ -15,7 +29,7 @@ class CategoryAdmin(ModelAdmin):
     ordering = ("name",)
 
 
-class BlogPostAdmin(ModelAdmin):
+class BlogAdmin(ModelAdmin):
     model = BlogPost
     menu_label = "List Blogs"
     menu_icon = "group"
@@ -32,7 +46,7 @@ class BlogPostAdmin(ModelAdmin):
 class BlogGroup(ModelAdminGroup):
     menu_label = "Blog"
     menu_icon = "list-ul"
-    items = (CategoryAdmin, BlogPostAdmin)
+    items = (CategoryAdmin, BlogAdmin)
 
 
 modeladmin_register(BlogGroup)

@@ -1,12 +1,27 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700|Roboto+Slab:300,400,700');
 
-:root{
+:root {
     --primary-font: 'Roboto Slab', serif;
     --secondary-font: 'Open Sans', sans-serif;
+    --fore-color: #111;
+    --secondary-fore-color: #444;
+    --back-color: #f8f8f8;
+    --secondary-back-color: #f0f0f0;
+    --blockquote-color: #f57c00;
+    --pre-color: #1565c0;
+    --border-color: #aaa;
+    --secondary-border-color: #ddd;
+    --heading-ratio: 1.19;
+    --universal-margin: .25rem;
+    --universal-padding: .25rem;
+    --universal-border-radius: .125rem;
+    --a-link-color: #0277bd;
+    --a-visited-color: #01579b;
 }
 
 /**** Global ****/
 h1, h2, h3, h4, h5, a, span{
+    margin: var(--universal-margin);
     font-family: var(--primary-font);
 }
 p{
@@ -44,17 +59,14 @@ textarea {
     width: 100%;
     border: .0625rem solid var(--input-border-color);
 }
-
-/**** Home ****/
 .blog-container{
-    min-height: 63vh;
+    min-height: 50vh;
 }
 #intro{
-    padding-bottom: 20px;
+    padding: 2rem 0;
 }
 #intro img{
     border-radius: 50%;
-    padding-top: 15px;
 }
 #intro p{
     color: #5a5a5a;
@@ -65,7 +77,7 @@ textarea {
 }
 @media all and (max-width: 768px){
     #intro img{
-        width: 45%;
+        width: 30%;
         display: block;
         margin: 0 auto;
         padding: 0;
@@ -128,9 +140,6 @@ textarea {
     font-style: italic;
     font-family: var(--primary-font);
 }
-.post.single .title {
-    font-size: 36px;
-}
 .post.single header {
     margin-bottom: 30px;
 }
@@ -143,12 +152,15 @@ textarea {
     color: #344151;
     letter-spacing: 0.01em;
 }
+.post .description p{
+
+}
 .post .description pre{
     padding: 0;
     margin: 15px 0;
 }
 .post .meta {
-    font-weight: 300;
+    font-weight: 400;
     font-size: 12px;
     background: #eee;
     display: inline;

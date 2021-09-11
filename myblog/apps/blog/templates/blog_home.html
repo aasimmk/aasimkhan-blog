@@ -1,0 +1,52 @@
+{% extends "main.html" %}
+
+{% load static %}
+
+{% block title %}
+    Aasim's blog
+{% endblock %}
+
+{% block meta %}
+    <meta name="keywords" content="Aasim Khan, python, django, serverless, iot, internet of things, aws, backend developer, new delhi">
+    <meta name="description" content="My name is Aasim Khan, software developer from India. Works on aws, python, django, rest-api and internet of things">
+{% endblock %}
+
+{% block intro %}
+    <div class="row">
+        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <div class="row" id="intro">
+                <div class="col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-0">
+                    <img class="img-responsive img-circle" alt="Aasim Khan" height="160" width="160" src="{% static 'img/aasim.jpg' %}">
+                </div>
+                <div class="col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-0">
+                    <h4>Hi! I'm Aasim Khan.</h4>
+                    <p>Software engineer based out of New Delhi, India. I write code in python. This is my personal blog and I post my ideas here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block content %}
+    <div class="row blog-container">
+        <div class="col-sm-12 col-md-12 col-lg-8 col-lg-offset-2">
+            {% if object_list|length == 0 %}
+                <img src="https://giphygifs.s3.amazonaws.com/media/C1puW66YSDMcM/giphy.gif" style="display: block; margin: 25px auto;" alt=""/>
+            {% else %}
+                {% for blog in blogs %}
+                    {% if blog.is_published %}
+                        <div class="post">
+                            <h2 class="title font-1">
+                                <a href="{% url "blog:view_blog_detail" blog.slug %}">{{ blog.title }}</a>
+                            </h2>
+                            <p class="font-1">{{ blog.meta_description }}</p>
+                            <p class="meta font-2">
+                                {{ blog.created }} | <strong><a class="collection" href="{{ blog.category.get_absolute_url }}">{{ blog.category }}</a></strong>
+                            </p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
