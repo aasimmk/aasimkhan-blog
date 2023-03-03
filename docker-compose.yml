@@ -1,0 +1,15 @@
+version: "0.1"
+
+services:
+  blog_app:
+    container_name: blog_app
+    restart: unless-stopped
+    image: aasimkhan/jekyll-theme-so-simple
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+    ports:
+      - "4000:4000"
+    command: bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0"
+    volumes:
+      - ./app:/app
