@@ -1,6 +1,6 @@
 name: Upload to S3
 
-on: [push, pull_request]
+on: [push,]
 
 jobs:
   deploy:
@@ -13,6 +13,6 @@ jobs:
       env:
         AWS_S3_BUCKET: ${{ secrets.AWS_BUCKET }}
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'app/_site'
