@@ -15,7 +15,7 @@ jobs:
           description: 'Preview app'
           environment: preview
 
-      - uses: shallwefootball/s3-upload-action@master
+      - uses: shallwefootball/upload-s3-action@v1.3.0
         name: Upload to S3
         id: S3
         with:
