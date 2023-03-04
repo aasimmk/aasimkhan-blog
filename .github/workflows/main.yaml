@@ -29,6 +29,6 @@ jobs:
         uses: chrnorm/deployment-status@releases/v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_url: https://aws-bucket.s3.eu-west-2.amazonaws.com/${{ steps.S3.outputs.object_key }}/index.html
+          target_url: https://aws-bucket.s3.eu-west-2.amazonaws.com/${{ secrets.AWS_BUCKET }}/index.html
           state: 'success'
           deployment_id: ${{ steps.test.outputs.deployment_id }}
