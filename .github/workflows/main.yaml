@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - uses: chrnorm/deployment-action@releases/v1
+      - uses: chrnorm/deployment-action@v2
         name: Create GitHub deployment
         id: test
         with:
@@ -15,7 +15,7 @@ jobs:
           description: 'Preview app'
           environment: preview
 
-      - uses: shallwefootball/upload-s3-action@v1.3.0
+      - uses: shallwefootball/s3-upload-action@master
         name: Upload to S3
         id: S3
         with:
@@ -26,9 +26,9 @@ jobs:
 
       - name: Update deployment status (success)
         if: success()
-        uses: chrnorm/deployment-status@releases/v1
+        uses: chrnorm/deployment-status@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          target_url: https://aws-bucket.s3.eu-west-2.amazonaws.com/${{ secrets.AWS_BUCKET }}/index.html
+          target_url: https://s3.eu-west-2.amazonaws.com/${{ secrets.AWS_BUCKET }}/index.html
           state: 'success'
-          deployment_id: 'S3'
+          deployment_id: ${{ steps.test.outputs.deployment_id }}
