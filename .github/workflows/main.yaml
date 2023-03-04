@@ -31,3 +31,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target_url: https://aws-bucket.s3.eu-west-2.amazonaws.com/${{ secrets.AWS_BUCKET }}/index.html
           state: 'success'
+          deployment_id: S3
