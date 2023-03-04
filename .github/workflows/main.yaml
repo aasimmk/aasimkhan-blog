@@ -6,29 +6,15 @@ jobs:
   preview:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: chrnorm/deployment-action@v2
-        name: Create GitHub deployment
-        id: test
+      - uses: hkusu/s3-upload-action@v2
+        id: upload # specify some ID for use in subsequent steps
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          description: 'Preview app'
-          environment: preview
-
-      - uses: shallwefootball/s3-upload-action@master
-        name: Upload to S3
-        id: S3
-        with:
-          aws_key_id: ${{ secrets.AWS_ACCESS_KEY }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_bucket: ${{ secrets.AWS_BUCKET }}
-          source_dir: app/_site
-
-      - name: Update deployment status (success)
-        if: success()
-        uses: chrnorm/deployment-status@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          target_url: https://s3.eu-west-2.amazonaws.com/${{ secrets.AWS_BUCKET }}/index.html
-          state: 'success'
-          deployment_id: ${{ steps.test.outputs.deployment_id }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: 'eu-west-2'
+          aws-bucket: ${{ secrets.AWS_BUCKET }}
+          file-path: './app/_site/*'
+          output-qr-url: 'true' # specify true
+          public: 'true'
+      - name: Show URL
+        run: echo '${{ steps.upload.outputs.qr-url }}' # use this output
