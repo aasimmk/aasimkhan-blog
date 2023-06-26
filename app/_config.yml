@@ -30,6 +30,13 @@ url: "https://aasimkhan.dev"
 #twitter_username: jekyllrb
 github_username: aasimmk
 
+# Links to social media
+social:
+  email: inelaah@gmail.com
+  github: https://github.com/aasimmk
+#  twitter: https://twitter.com
+  linkedin: https://www.linkedin.com/in/aasim-mk/
+
 # Google Analytics
 google_analytics: UA—XXXXXXXX-X
 
@@ -38,7 +45,7 @@ theme: tale
 markdown: kramdown
 include:
   - _pages
-permalink: /:year-:month-:day/:title
+permalink: /:title
 paginate: 2
 plugins:
   - jekyll-feed
