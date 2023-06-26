@@ -1,12 +1,6 @@
-
 name: Build and deploy jekyll site
 
-on:
-  push:
-    branches:
-      - *
-
-  workflow_dispatch: # Allows a run of this workflow to be triggerred manually from the Actions tab
+on: [push,]
 
 jobs:
   jekyll:
