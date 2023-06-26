@@ -7,9 +7,9 @@ services:
     image: aasimkhan/jekyll-theme-so-simple
     build:
       context: ./app
-      dockerfile: ./Dockerfile
+      dockerfile: ops/Dockerfile
     ports:
       - "4000:4000"
-    command: bash -c "bundle && bundle exec jekyll serve --host 0.0.0.0"
+    command: bash -c "bundle && bundle exec jekyll build -d ./_build && bundle exec jekyll serve --host 0.0.0.0"
     volumes:
       - ./app:/app

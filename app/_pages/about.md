@@ -2,7 +2,7 @@
 layout: post
 title: "About"
 author: "Aasim"
-permalink: /about/
+permalink: /about.html
 ---
 
 ## About me

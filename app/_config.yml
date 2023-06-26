@@ -45,7 +45,7 @@ theme: tale
 markdown: kramdown
 include:
   - _pages
-permalink: /:title
+permalink: /:title.html
 paginate: 5
 plugins:
   - jekyll-feed

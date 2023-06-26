@@ -46,8 +46,8 @@
     </a>
     <ul>
       <li><a href="/">Posts</a></li>
-      <li><a href="/tags">Tags</a></li>
-      <li><a href="/about">About</a></li>
+      <li><a href="/tags.html">Tags</a></li>
+      <li><a href="/about.html">About</a></li>
     </ul>
   </div>
 </nav>
@@ -58,90 +58,13 @@
 <ul>
   
     <li>
-      <h2><a href="/iot-notification-using-aws-part-2">Iot Notification Using Aws Part 2</a></h2>
-      <hr />
-<p>layout: post
-title: “IoT notification using AWS - P2”
-author: “Aasim”
-#date:   2023-03-03 09:44:40 +0000
-tags: “IoT”
-—</p>
-
-<h1 id="setting-up-sqs-for-receiving-notifications">Setting up SQS for receiving notifications.</h1>
-
-<p>Now there could be other methods to do the same. Like we can trigger the lambda as soon as the data arrives at AWS IoT core. That’s also fine. But think like this, you have thousands of devices hitting the same endpoint, and you want to send out notifications to multiple destinations on certain conditions. In this case, the AWS SQS service comes in. AWS SQS is designed to process the requests asynchronously. So handling the request in distributed environment with AWS SQS seems a good fit for this scenario. Let’s start configuring AWS serverless stack for email notifications.</p>
-
-<h3 id="step-1">Step #1</h3>
-
-<p>Register and verify the email address of sender and recipients in <strong>AWS SES -&gt; Email Addresses</strong></p>
-
-<h3 id="step-2">Step #2</h3>
-
-<p>Open AWS Lambda service and create lambda.
-Make sure to include <code class="language-plaintext highlighter-rouge">AmazonSESFullAccess</code> policy to the role attached to your lambda.</p>
-
-<p>Replace the placeholder value and use the below script</p>
-
-<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="n">boto3</span>
-<span class="kn">import</span> <span class="n">json</span>
-<span class="kn">from</span> <span class="n">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-
-
-<span class="k">def</span> <span class="nf">lambda_handler</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-    <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="p">.</span><span class="nf">client</span><span class="p">(</span><span class="s">'ses'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s">'Records'</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">event</span><span class="p">[</span><span class="s">'Records'</span><span class="p">]:</span>
-            <span class="n">iot_data</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="nf">loads</span><span class="p">(</span><span class="n">record</span><span class="p">[</span><span class="s">'body'</span><span class="p">])</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">iot_data</span><span class="p">[</span><span class="s">'ts'</span><span class="p">]</span>
-            <span class="n">readable_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">fromtimestamp</span><span class="p">(</span><span class="nf">int</span><span class="p">(</span><span class="n">timestamp</span><span class="o">/</span><span class="mi">1000</span><span class="p">)).</span><span class="nf">strftime</span><span class="p">(</span><span class="s">'%Y-%m-%d %H:%M:%S'</span><span class="p">)</span>
-            <span class="n">message_body</span> <span class="o">=</span> <span class="s">'Temperature seems high. Latest recorded temperature is &lt;strong&gt;{0}&lt;/strong&gt; on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;Heat Index: {2}&lt;br&gt;Humidity: {3}&lt;br&gt;&lt;br&gt;Notification sent from &lt;strong&gt;{4}&lt;/strong&gt;.'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span>
-                <span class="n">iot_data</span><span class="p">[</span><span class="s">'temperature'</span><span class="p">],</span> <span class="n">readable_time</span><span class="p">,</span> <span class="n">iot_data</span><span class="p">[</span><span class="s">'heat_index'</span><span class="p">],</span> <span class="n">iot_data</span><span class="p">[</span><span class="s">'humidity'</span><span class="p">],</span> <span class="n">iot_data</span><span class="p">[</span><span class="s">'device_id'</span><span class="p">])</span>
-            <span class="n">client</span><span class="p">.</span><span class="nf">send_email</span><span class="p">(</span>
-                <span class="n">Source</span><span class="o">=</span><span class="s">'&lt;SENDER EMAIL&gt;'</span><span class="p">,</span>
-                <span class="n">Destination</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s">'ToAddresses'</span><span class="p">:</span> <span class="p">[</span><span class="s">'RECIEVER EMAIL'</span><span class="p">],</span>
-                <span class="p">},</span>
-                <span class="n">Message</span><span class="o">=</span><span class="p">{</span>
-                    <span class="s">'Subject'</span><span class="p">:</span> <span class="p">{</span><span class="s">'Data'</span><span class="p">:</span> <span class="s">'Temperature Alert! - {0}'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">readable_time</span><span class="p">)},</span>
-                    <span class="s">'Body'</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s">'Html'</span><span class="p">:</span> <span class="p">{</span><span class="s">'Data'</span><span class="p">:</span> <span class="n">message_body</span><span class="p">}</span>
-                    <span class="p">}</span>
-                <span class="p">},</span>
-            <span class="p">)</span></code></pre></figure>
-
-<p>The source is also available on GitHub <a href="https://github.com/aasimmk/aws-iot-notifications/blob/master/lambda/main.py">here</a>.</p>
-
-<h3 id="step-3">Step #3</h3>
-<p>Go to AWS SQS and create a standard queue. Perform below actions.</p>
-
-<p><img src="../assets/imgs/sqs-trigger.jpg" alt="sqs-trigger" /></p>
-
-<p>Add permission</p>
-
-<p><img src="../assets/imgs/sqs-permission.jpg" alt="sqs-permission" /></p>
-
-<p>and then attach the lambda function.</p>
-
-<p>Step #4
-We will create a rule in AWS IoT for sending request to AWS SQS when the temperature goes to 25° Celsius and also add timestamp to data arriving to the AWS IoT.</p>
-
-<p>Use the below query and add the action “Send a message to an SQS queue”.</p>
-
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="nb">timestamp</span><span class="p">()</span> <span class="k">as</span> <span class="n">ts</span><span class="p">,</span> <span class="o">*</span> <span class="k">FROM</span> <span class="s1">'Node/#'</span> <span class="k">WHERE</span> <span class="n">temperature</span> <span class="o">&gt;=</span> <span class="mi">25</span></code></pre></figure>
-
-<p><img src="../assets/imgs/sqs-rule.jpg" alt="sqs-rule" /></p>
-
-<blockquote>
-  <p>I am using wildcard-based Topic name <code class="language-plaintext highlighter-rouge">Node/#</code>  in the above query, which is also our device name. So, our rule is valid for all those which has the device id as <code class="language-plaintext highlighter-rouge">Node/1</code>, <code class="language-plaintext highlighter-rouge">Node/2</code>, <code class="language-plaintext highlighter-rouge">Node/3</code> and so on.</p>
-</blockquote>
-
-<p>Finger crossed. Let’s check the network, connection to sensor and connect the device. Give some heat to the sensor, and you shall receive the email notification.</p>
-
+      <h2><a href="/iot-notification-using-aws-part-2.html">IoT notification using AWS - P2</a></h2>
+      <h1 id="setting-up-sqs-for-receiving-notifications">Setting up SQS for receiving notifications.</h1>
 
     </li>
   
     <li>
-      <h2><a href="/iot-notification-using-aws-part-1">IoT notification using AWS - P1</a></h2>
+      <h2><a href="/iot-notification-using-aws-part-1.html">IoT notification using AWS - P1</a></h2>
       <h1 id="introduction">Introduction</h1>
 <p>Internet of things is a hot-buzz-word in the field of AI these days. However, the concept was developed about 20 years ago by <a href="https://twitter.com/kevin_ashton/">@kevin_ashton</a>. Let’s have a simple definition to get it introduced.</p>
 
@@ -153,7 +76,7 @@ We will create a rule in AWS IoT for sending request to AWS SQS when the tempera
     </main>
     <footer>
   <span>
-    &copy; <time datetime="2023-06-26 15:48:17 +0000">2023</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+    &copy; <time datetime="2023-06-26 23:19:40 +0000">2023</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
   </span>
 </footer>
 
