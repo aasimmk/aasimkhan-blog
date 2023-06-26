@@ -16,3 +16,12 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'eu-west-2'
         SOURCE_DIR: 'app/_site'
+
+  check-line-endings:
+    name: Check CRLF
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository contents
+        uses: actions/checkout@v2
+      - name: Action to check if CRLF line endings exists in the repository
+        uses: erclu/check-crlf@v1.2.0
