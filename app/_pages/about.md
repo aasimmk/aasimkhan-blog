@@ -6,12 +6,13 @@ permalink: /about/
 ---
 
 ## About me
-Lives in London, UK
-I am passionate about coding and solving boring stuff with automation.
-Professionally, my skills are in Python, Django, AWS, Celery, Kafka, RabbitMQ and fairly DevOps.
+`#software_engineer` `#foodie` `#trying_to_loose_weight`
 
+Originally from Jhansi, India, now lives in London, UK.
+I have been working in the industry for ~10 years, and I am passionate about building products and even the boring stuff.
+Professionally, my skills are in Python, Django, AWS, Celery, Kafka, RabbitMQ, ETL/ELT and fairly DevOps.
 
-#### I am an introvert but still here are my social links.
+### I am an introvert but still here are my social links.
 - [GitHub][URL_GitHub]
 - [LinkedIn][URL_LinkedIn]
 - [Twitter][URL_Twitter]

@@ -19,7 +19,7 @@
 # in the templates via {{ site.myvariable }}.
 
 # Site settings
-title: Welcome to Aasim's blog
+title: Aasim's blog
 email: aasimkhan.dev@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
@@ -27,7 +27,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   Google search results) and in your feed.xml site description.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://aasimkhan.dev"
-#twitter_username: jekyllrb
+twitter_username: aasim_mk
 github_username: aasimmk
 
 # Links to social media
@@ -46,7 +46,7 @@ markdown: kramdown
 include:
   - _pages
 permalink: /:title
-paginate: 2
+paginate: 5
 plugins:
   - jekyll-feed
   - jekyll-paginate
