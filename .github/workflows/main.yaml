@@ -64,7 +64,7 @@ jobs:
           ### Flags accepted can be found here https://jekyllrb.com/docs/configuration/options/#build-command-options
 
       - name: 🚀 deploy
-        uses: actions/checkout@master
+#        uses: actions/checkout@master
         uses: jakejarvis/s3-sync-action@master
         with:
           args: --acl private --follow-symlinks --delete
