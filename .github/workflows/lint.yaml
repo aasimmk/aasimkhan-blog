@@ -1,0 +1,13 @@
+name: Lint
+
+on: [push,]
+
+jobs:
+  check-line-endings:
+    name: Check CRLF
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository contents
+        uses: actions/checkout@v2
+      - name: Action to check if CRLF line endings exists in the repository
+        uses: erclu/check-crlf@v1.2.0

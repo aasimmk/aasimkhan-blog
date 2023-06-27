@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>IoT notification using AWS - P1 | Aasim’s blog</title>
+<meta name="generator" content="Jekyll v4.3.2" />
+<meta property="og:title" content="IoT notification using AWS - P1" />
+<meta name="author" content="Aasim" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction Internet of things is a hot-buzz-word in the field of AI these days. However, the concept was developed about 20 years ago by @kevin_ashton. Let’s have a simple definition to get it introduced." />
+<meta property="og:description" content="Introduction Internet of things is a hot-buzz-word in the field of AI these days. However, the concept was developed about 20 years ago by @kevin_ashton. Let’s have a simple definition to get it introduced." />
+<link rel="canonical" href="http://0.0.0.0:4000/iot-notification-using-aws-part-1.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/iot-notification-using-aws-part-1.html" />
+<meta property="og:site_name" content="Aasim’s blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-05-23T00:00:00+00:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="IoT notification using AWS - P1" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Aasim"},"dateModified":"2019-05-23T00:00:00+00:00","datePublished":"2019-05-23T00:00:00+00:00","description":"Introduction Internet of things is a hot-buzz-word in the field of AI these days. However, the concept was developed about 20 years ago by @kevin_ashton. Let’s have a simple definition to get it introduced.","headline":"IoT notification using AWS - P1","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/iot-notification-using-aws-part-1.html"},"url":"http://0.0.0.0:4000/iot-notification-using-aws-part-1.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400,400i,700">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+
+  <!-- RSS -->
+  <link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Aasim&apos;s blog" />
+
+  <!-- Google Analytics-->
+  
+</head>
+
+  <body>
+    <nav class="nav">
+  <div class="nav-container">
+    <a href="/">
+      <h2 class="nav-title">Aasim's blog</h2>
+    </a>
+    <ul>
+      <li><a href="/">Posts</a></li>
+      <li><a href="/tags.html">Tags</a></li>
+      <li><a href="/about.html">About</a></li>
+    </ul>
+  </div>
+</nav>
+
+    <main>
+      <div class="post">
+  <div class="post-info">
+    
+      <br>
+      <span>Written on&nbsp;</span><time datetime="2019-05-23 00:00:00 +0000">May 23, 2019</time>
+    
+  </div>
+
+  <h1 class="post-title">IoT notification using AWS - P1</h1>
+  <div class="post-line"></div>
+
+  <h1 id="introduction">Introduction</h1>
+<p>Internet of things is a hot-buzz-word in the field of AI these days. However, the concept was developed about 20 years ago by <a href="https://twitter.com/kevin_ashton/">@kevin_ashton</a>. Let’s have a simple definition to get it introduced.</p>
+
+<p>The network of small devices connected with sensors, which can communicate over the internet and are capable of sending/recieving data and trigger some action based on certain conditions.</p>
+
+<p>There is a lot more in introduction itself like application areas, communication architecture, security and much more. I would suggest going through the IoT’s <a href="https://en.wikipedia.org/wiki/Internet_of_things">wiki</a>.</p>
+
+<p>I am going to show how to configure nodemcu with AWS with security certificates. I have selected nodemcu as IoT device and DHT11 temperature sensor, both are easily available online. <strong>The basic idea is to get notification using AWS serveless stack when the temperature hits too high</strong>. Now let’s configure the device and feed some code to it.</p>
+
+<p>Setting Up The Device
+To get started, you need to install</p>
+
+<p>Ardruino IDE (<a href="https://www.arduino.cc/en/Main/Software">download</a>)
+NodeMCU Driver (download <a href="https://sparks.gogo.co.nz/ch340.html">CH340</a> or <a href="https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers/">CP210x</a>) check the name on nodemcu.</p>
+
+<h3 id="step-1">Step #1</h3>
+
+<p>Open arduino IDE preferences and update “Additional Boards Manager URLs” value with
+<code class="language-plaintext highlighter-rouge">http://arduino.esp8266.com/stable/package_esp8266com_index.json</code>
+<img src="../assets/imgs/arduino-settings.jpg" alt="arduino-settings" /></p>
+
+<h3 id="step-2">Step #2</h3>
+
+<p><strong>Open Tools -&gt; Boards -&gt; Board Manager</strong>. Search for <strong>esp8266</strong> and install it.</p>
+
+<p>Now select <strong>Tools -&gt; Boards -&gt; NodeMCU 1.0(ESP-12E Module)</strong> and connect your device to USB port. Check if your device is working fine, or you are connected to the correct port by clicking on <strong>Tools -&gt; Board Info</strong>. You will get a pop-up window(see image below).</p>
+
+<p><img src="../assets/imgs/board-info.jpg" alt="board-info" /></p>
+
+<p>If it throws an error, try changing port listed under <strong>Tool -&gt; Port</strong>. If you are still getting error, then probably the driver is not installed properly.</p>
+
+<h3 id="step-3">Step #3</h3>
+
+<p>Search and install required libraries under <strong>Sketch -&gt; Include Library -&gt; Manage Libraries</strong></p>
+
+<p>DHT sensor library (by Adafruit)
+PubSubClient (by Nick O’Leary)</p>
+
+<h3 id="step-4">Step #4</h3>
+
+<p>Now go to AWS IoT Core and create a policy. You will need this while creating the certificates. Replace aws account id, you can find it in your aws account settings.</p>
+
+<figure class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"Version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2012-10-17"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"Statement"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"Effect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Allow"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"iot:*"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"Resource"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arn:aws:iot:us-east-1:AWS_ACCOUNT_ID:*"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre></figure>
+
+<h3 id="step-5">Step #5</h3>
+
+<p>Create certificates and download them from <strong>Security -&gt; Certificates using “One-click certificate creation”</strong>. Activate the certificate and attach the policy that you have created in the previous step.</p>
+
+<p><img src="../assets/imgs/aws-certificate-creation.png" alt="aws-certificate-creation" /></p>
+
+<blockquote>
+  <p>To check the certs are in action. When you perform step #8 successfully, just deactivate the certificate and try reconnecting again. You will not be able to connect the until the certificate is activated.</p>
+</blockquote>
+
+<h3 id="step-6">Step #6</h3>
+
+<p>Coding Time! Replace the placeholders with your values. Use any text editor to open the downloaded certificatates.</p>
+
+<figure class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;DHT.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;ESP8266WiFi.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;PubSubClient.h&gt;</span><span class="cp">
+</span><span class="k">extern</span> <span class="s">"C"</span> <span class="p">{</span>
+<span class="cp">#include</span> <span class="cpf">"libb64/cdecode.h"</span><span class="cp">
+</span><span class="p">}</span>
+
+<span class="cp">#define DHTPIN 4
+#define DHTTYPE DHT11
+</span>
+<span class="n">DHT</span> <span class="nf">dht</span><span class="p">(</span><span class="n">DHTPIN</span><span class="p">,</span><span class="n">DHTTYPE</span><span class="p">);</span>
+
+<span class="k">struct</span> <span class="nc">dht11</span>
+<span class="p">{</span>
+  <span class="kt">float</span> <span class="n">humidity</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">heatIndex</span><span class="p">;</span>
+  <span class="kt">float</span> <span class="n">temp</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="n">led_counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">led_state</span> <span class="o">=</span> <span class="n">LOW</span><span class="p">;</span>
+<span class="k">struct</span> <span class="nc">dht11</span> <span class="n">sensor_data</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">read_sensor</span><span class="p">(</span><span class="k">struct</span> <span class="nc">dht11</span><span class="o">*</span> <span class="n">data</span><span class="p">);</span>
+<span class="kt">char</span> <span class="n">sensorData</span><span class="p">;</span>
+
+<span class="c1">// Update these with values suitable for your network.</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">ssid</span> <span class="o">=</span> <span class="s">"&lt;WIFI_SSID&gt;"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">password</span> <span class="o">=</span> <span class="s">"&lt;WIFI_PASSOWRD&gt;"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">awsEndpoint</span> <span class="o">=</span> <span class="s">"&lt;AWS_IOT_ENDPOINT&gt;"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">DEVICE_ID</span> <span class="o">=</span> <span class="s">"&lt;CUSTOM_DEVICE&gt;"</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">PUBLISH_TOPIC</span> <span class="o">=</span> <span class="n">DEVICE_ID</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">SUBSCRIBE_TOPIC</span> <span class="o">=</span> <span class="s">"&lt;TOPIC_TO_SUBSCRIBE&gt;"</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="n">String</span> <span class="n">certificatePemCrt</span> <span class="o">=</span> <span class="err">'</span><span class="o">&lt;</span><span class="n">AWS_CERTIFICATE_PEM</span><span class="o">&gt;</span><span class="err">'</span>
+<span class="k">const</span> <span class="n">String</span> <span class="n">privatePemKey</span> <span class="o">=</span> <span class="err">'</span><span class="o">&lt;</span><span class="n">AWS_PRIVATE_PEM</span><span class="o">&gt;</span><span class="err">'</span>
+
+<span class="kt">int</span> <span class="n">timeSinceLastRead</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">WiFiClientSecure</span> <span class="n">wiFiClient</span><span class="p">;</span>
+<span class="kt">void</span> <span class="nf">callback</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">topic</span><span class="p">,</span> <span class="n">byte</span><span class="o">*</span> <span class="n">payload</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">len</span><span class="p">);</span>
+<span class="n">PubSubClient</span> <span class="nf">client</span><span class="p">(</span><span class="n">awsEndpoint</span><span class="p">,</span> <span class="mi">8883</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">wiFiClient</span><span class="p">);</span>
+<span class="kt">long</span> <span class="n">lastMsg</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">char</span> <span class="n">msg</span><span class="p">[</span><span class="mi">200</span><span class="p">];</span>
+<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">analog_pin</span> <span class="o">=</span> <span class="n">A0</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">BUILTIN_LED</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">analog_pin</span><span class="p">,</span> <span class="n">INPUT</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+  <span class="n">setup_wifi</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">setup_wifi</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Connecting to "</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">ssid</span><span class="p">);</span>
+  <span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ssid</span><span class="p">,</span> <span class="n">password</span><span class="p">);</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span> <span class="o">!=</span> <span class="n">WL_CONNECTED</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"."</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"IP address: "</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">());</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"MAC: "</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">macAddress</span><span class="p">());</span>
+  <span class="kt">uint8_t</span> <span class="n">binaryCert</span><span class="p">[</span><span class="n">certificatePemCrt</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">4</span><span class="p">];</span>
+  <span class="kt">int</span> <span class="n">len</span> <span class="o">=</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">certificatePemCrt</span><span class="p">,</span> <span class="n">binaryCert</span><span class="p">);</span>
+  <span class="n">wiFiClient</span><span class="p">.</span><span class="n">setCertificate</span><span class="p">(</span><span class="n">binaryCert</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+  <span class="kt">uint8_t</span> <span class="n">binaryPrivate</span><span class="p">[</span><span class="n">privatePemKey</span><span class="p">.</span><span class="n">length</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">/</span> <span class="mi">4</span><span class="p">];</span>
+  <span class="n">len</span> <span class="o">=</span> <span class="n">b64decode</span><span class="p">(</span><span class="n">privatePemKey</span><span class="p">,</span> <span class="n">binaryPrivate</span><span class="p">);</span>
+  <span class="n">wiFiClient</span><span class="p">.</span><span class="n">setPrivateKey</span><span class="p">(</span><span class="n">binaryPrivate</span><span class="p">,</span> <span class="n">len</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">callback</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span> <span class="n">topic</span><span class="p">,</span> <span class="n">byte</span><span class="o">*</span> <span class="n">payload</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Message arrived ["</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">topic</span><span class="p">);</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"] "</span><span class="p">);</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">((</span><span class="kt">char</span><span class="p">)</span><span class="n">payload</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">reconnect</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// Loop until we're reconnected</span>
+  <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">client</span><span class="p">.</span><span class="n">connected</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Attempting MQTT connection..."</span><span class="p">);</span>
+    <span class="c1">// Attempt to connect</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">DEVICE_ID</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"connected"</span><span class="p">);</span>
+      <span class="n">client</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">SUBSCRIBE_TOPIC</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"failed, rc="</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">client</span><span class="p">.</span><span class="n">state</span><span class="p">());</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">" try again in 5 seconds"</span><span class="p">);</span>
+      <span class="c1">// Wait 5 seconds before retrying</span>
+      <span class="n">delay</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">client</span><span class="p">.</span><span class="n">connected</span><span class="p">())</span> <span class="p">{</span>
+    <span class="n">reconnect</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="n">client</span><span class="p">.</span><span class="n">loop</span><span class="p">();</span>
+  <span class="kt">long</span> <span class="n">now</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">lastMsg</span> <span class="o">&gt;</span> <span class="mi">60000</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">lastMsg</span> <span class="o">=</span> <span class="n">now</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">read_sensor</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sensor_data</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="kt">char</span> <span class="n">str_temp</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span><span class="n">str_humidity</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span><span class="n">str_hi</span><span class="p">[</span><span class="mi">6</span><span class="p">];</span>
+      <span class="n">dtostrf</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">.</span><span class="n">temp</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">str_temp</span><span class="p">);</span>
+      <span class="n">dtostrf</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">.</span><span class="n">humidity</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">str_humidity</span><span class="p">);</span>
+      <span class="n">dtostrf</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">.</span><span class="n">heatIndex</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">str_hi</span><span class="p">);</span>
+      <span class="n">snprintf</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="s">"{</span><span class="se">\"</span><span class="s">device_id</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">temperature</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">humidity</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s">,</span><span class="se">\"</span><span class="s">heat_index</span><span class="se">\"</span><span class="s">:</span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s">}"</span><span class="p">,</span><span class="n">DEVICE_ID</span><span class="p">,</span><span class="n">str_temp</span><span class="p">,</span><span class="n">str_humidity</span><span class="p">,</span><span class="n">str_hi</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">"Publish message: "</span><span class="p">);</span>
+      <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+      <span class="n">client</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">PUBLISH_TOPIC</span><span class="p">,</span> <span class="n">msg</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">now</span> <span class="o">-</span> <span class="n">lastMsg</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">led_counter</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">led_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">led_state</span><span class="p">)</span><span class="o">?</span><span class="n">LOW</span><span class="o">:</span><span class="n">HIGH</span><span class="p">;</span>
+      <span class="n">digitalWrite</span><span class="p">(</span><span class="n">BUILTIN_LED</span><span class="p">,</span> <span class="n">led_state</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="nf">read_sensor</span><span class="p">(</span><span class="k">struct</span> <span class="nc">dht11</span><span class="o">*</span> <span class="n">data</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">data</span><span class="o">-&gt;</span><span class="n">humidity</span> <span class="o">=</span> <span class="n">dht</span><span class="p">.</span><span class="n">readHumidity</span><span class="p">();</span>
+  <span class="n">data</span><span class="o">-&gt;</span><span class="n">temp</span> <span class="o">=</span> <span class="n">dht</span><span class="p">.</span><span class="n">readTemperature</span><span class="p">();</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">humidity</span><span class="p">)</span><span class="o">||</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">temp</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">"DHT11 Read Failed"</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">data</span><span class="o">-&gt;</span><span class="n">heatIndex</span> <span class="o">=</span> <span class="n">dht</span><span class="p">.</span><span class="n">computeHeatIndex</span><span class="p">(</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">temp</span><span class="p">,</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">humidity</span><span class="p">,</span><span class="nb">false</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">b64decode</span><span class="p">(</span><span class="n">String</span> <span class="n">b64Text</span><span class="p">,</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">output</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">base64_decodestate</span> <span class="n">s</span><span class="p">;</span>
+  <span class="n">base64_init_decodestate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+  <span class="kt">int</span> <span class="n">cnt</span> <span class="o">=</span> <span class="n">base64_decode_block</span><span class="p">(</span><span class="n">b64Text</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">b64Text</span><span class="p">.</span><span class="n">length</span><span class="p">(),</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">output</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">s</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">cnt</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>Take a close look at the code and verify values that you have updated. Now compile and upload the code to your device.</p>
+
+<p>The source is also available on GitHub <a href="https://github.com/aasimmk/aws-iot-notifications/">here</a>.</p>
+
+<h3 id="step-7">Step #7</h3>
+
+<p>Disconnect the device and connect the sensor to the following pins on the Nodemcu.</p>
+
+<ul>
+  <li>Connect + to 3v3 (Voltage Pin)</li>
+  <li>Connect - to GND (Ground Pin)</li>
+  <li>Connect out to D2 (Data Pin)</li>
+</ul>
+
+<h3 id="step-8">Step #8</h3>
+
+<p>Check the connections.</p>
+
+<p>Reconnect your device via USB and open <strong>Tools -&gt; Serial Monitor</strong>. You will see the output of the iot device here. Now, go to AWS IoT and on the main dashboard, click on “Test” in the sidebar menu. Enter device id and subscribe to it. At this point, you should start getting data on the AWS IoT.</p>
+
+<p>If you encounter any error here, check the “Serial Monitor.” There might be connection issue with network or your temperature sensor may not send data to the IoT device.</p>
+
+<p>So far, you are able to connect the IoT device to AWS cloud. Now we are good to go to part 2, which is focused on the backend that manages data from IoT device and notifications.</p>
+
+<p>Continue to <a href="/iot-notification-using-aws-part-2/">part 2</a></p>
+
+
+</div>
+
+
+
+<div class="pagination">
+  
+    <a href="/iot-notification-using-aws-part-2.html" class="left arrow">&#8592;</a>
+  
+  
+
+  <a href="#" class="top">Top</a>
+</div>
+
+    </main>
+    <footer>
+  <span>
+    &copy; <time datetime="2023-06-26 23:19:40 +0000">2023</time> . Made with Jekyll using the <a href="https://github.com/chesterhow/tale/">Tale</a> theme.
+  </span>
+</footer>
+
+  </body>
+</html>
